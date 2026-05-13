@@ -1,4 +1,4 @@
-# GPA Audit Calculator
+# GPA Calculator
 
 NTU recently released its new and updated FGO system, I've created this project to help me manage my 'S/U' allocations accordingly
 
