@@ -34,7 +34,7 @@ export default function ModuleManager() {
     formError,
     handleAddModule,
 
-    updateModule,
+    updateModuleGrade,
     deleteModule,
   } = useModuleManager();
 
@@ -80,7 +80,7 @@ export default function ModuleManager() {
             <SemesterGroup
               key={group.semester}
               group={group}
-              onUpdateModule={updateModule}
+              onUpdateModuleGrade={updateModuleGrade}
               onDeleteModule={deleteModule}
             />
           ))}

@@ -1,9 +1,11 @@
 import { useMemo, useState, type FormEvent } from "react";
+import { toast } from "sonner";
+import { validateSuGradeChange } from "../models/degree";
 import { useModuleStore } from "../stores/useModuleStore";
 import {
   getModuleLevel,
   getModuleSemesterLabel,
-  normaliseModuleType,
+  getEffectiveModuleTypeForAu,
 } from "../models/module";
 import {
   ALL_TYPE_FILTER,
@@ -20,6 +22,9 @@ import type {
 
 export function useModuleManager() {
   const modules = useModuleStore((state) => state.modules);
+  const degreeRequirements = useModuleStore(
+    (state) => state.degreeRequirements,
+  );
   const addModule = useModuleStore((state) => state.addModule);
   const updateModule = useModuleStore((state) => state.updateModule);
   const deleteModule = useModuleStore((state) => state.deleteModule);
@@ -62,7 +67,7 @@ export function useModuleManager() {
       const matchesType =
         typeFilter === ALL_TYPE_FILTER
           ? true
-          : normaliseModuleType(module.type) === typeFilter;
+          : getEffectiveModuleTypeForAu(module) === typeFilter;
 
       const moduleSemester = getModuleSemesterLabel(module);
 
@@ -157,6 +162,28 @@ export function useModuleManager() {
     setShowAddForm(false);
   }
 
+  function updateModuleGrade(moduleId: string, grade: string) {
+    const validation = validateSuGradeChange(
+      modules,
+      degreeRequirements,
+      moduleId,
+      grade,
+    );
+
+    if (!validation.allowed) {
+      toast.error(validation.message ?? "This S/U change is not allowed.");
+      return;
+    }
+
+    updateModule(moduleId, {
+      grade,
+    });
+
+    if (validation.message) {
+      toast.info(validation.message);
+    }
+  }
+
   return {
     modules,
     groupedModules,
@@ -185,7 +212,7 @@ export function useModuleManager() {
     formError,
     handleAddModule,
 
-    updateModule,
     deleteModule,
+    updateModuleGrade,
   };
 }

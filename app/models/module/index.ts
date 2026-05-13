@@ -23,9 +23,11 @@ export type {
 export {
   countsTowardGpa,
   createModule,
+  getEffectiveModuleTypeForAu,
   getModuleLevel,
   getModuleSemesterLabel,
   isModuleCompleted,
+  isSuGradedModule,
   normaliseGrade,
   normaliseModule,
   normaliseModuleAu,

@@ -7,13 +7,13 @@ import ModuleTypeBadge from "./ModuleTypeBadge";
 
 type ModuleTableProps = {
   modules: Module[];
-  onUpdateModule: (id: string, updates: UpdateModuleInput) => void;
+  onUpdateModuleGrade: (id: string, grade: string) => void;
   onDeleteModule: (id: string) => void;
 };
 
 export default function ModuleTable({
   modules,
-  onUpdateModule,
+  onUpdateModuleGrade,
   onDeleteModule,
 }: ModuleTableProps) {
   return (
@@ -45,16 +45,14 @@ export default function ModuleTable({
               <td className="px-3 py-3 text-gray-700">{module.au}</td>
 
               <td className="px-3 py-3">
-                <ModuleTypeBadge type={module.type} />
+                <ModuleTypeBadge module={module} />
               </td>
 
               <td className="px-3 py-3">
                 <select
                   value={module.grade ?? ""}
                   onChange={(event) =>
-                    onUpdateModule(module.id, {
-                      grade: event.target.value,
-                    })
+                    onUpdateModuleGrade(module.id, event.target.value)
                   }
                   className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500"
                 >

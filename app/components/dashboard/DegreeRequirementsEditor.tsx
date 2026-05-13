@@ -10,12 +10,16 @@ type DegreeRequirementsEditorProps = {
   degreeRequirements: DegreeRequirements;
   updateTotalAUs: (totalAUs: number) => void;
   updateTypeRequirement: (type: ModuleType, requiredAUs: number) => void;
+  updateTotalSUAUs: (totalSUAUs: number) => void;
+  updateRestrictedSUAUs: (restrictedSUAUs: number) => void;
 };
 
 export default function DegreeRequirementsEditor({
   degreeRequirements,
   updateTotalAUs,
   updateTypeRequirement,
+  updateTotalSUAUs,
+  updateRestrictedSUAUs,
 }: DegreeRequirementsEditorProps) {
   const requirementsDoNotMatch = !requirementsMatchTotalAUs(degreeRequirements);
 
@@ -63,6 +67,42 @@ export default function DegreeRequirementsEditor({
           </label>
         ))}
       </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <label className="block">
+          <span className="text-sm font-medium text-gray-700">
+            Total S/U AUs
+          </span>
+
+          <input
+            type="number"
+            min="0"
+            value={degreeRequirements.suPolicy.totalSUAUs}
+            onChange={(event) => updateTotalSUAUs(Number(event.target.value))}
+            className="mt-1 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
+          />
+        </label>
+
+        <label className="block">
+          <span className="text-sm font-medium text-gray-700">
+            Restricted S/U AUs
+          </span>
+
+          <input
+            type="number"
+            min="0"
+            value={degreeRequirements.suPolicy.restrictedSUAUs}
+            onChange={(event) =>
+              updateRestrictedSUAUs(Number(event.target.value))
+            }
+            className="mt-1 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
+          />
+        </label>
+      </div>
+      <p className="mt-3 text-sm text-gray-500">
+        Only {degreeRequirements.suPolicy.restrictedSUAUs} AUs of S/U can be
+        used for Core, MPE, or ICC modules. S/U MPE modules are counted towards
+        BDE AUs.
+      </p>
 
       {requirementsDoNotMatch && (
         <p className="mt-3 text-sm text-amber-700">

@@ -1,6 +1,6 @@
 # GPA Audit Calculator
 
-A frontend-only GPA and module tracking app built with **Next.js**, **TypeScript**, **Tailwind CSS**, and **Zustand**.
+NTU recently released its new and updated FGO system, I've created this project to help me manage my 'S/U' allocations accordingly
 
 The app helps students track completed modules, calculate CGPA, monitor AU progress, manage degree requirements, and import/export module data using Excel files.
 

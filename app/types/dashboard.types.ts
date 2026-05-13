@@ -1,6 +1,7 @@
 // app/components/dashboard/dashboard.types.ts
 
 import type { ModuleType } from "../models/module";
+import type { SuUsageSummary } from "../models/degree";
 
 export type CompletedAUsByType = Record<ModuleType, number>;
 
@@ -12,4 +13,5 @@ export type DashboardData = {
   completedByType: CompletedAUsByType;
   typePercentages: CompletedAUsByType;
   remainingPercentage: number;
+  suUsage: SuUsageSummary;
 };

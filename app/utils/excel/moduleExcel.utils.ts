@@ -15,6 +15,8 @@ import {
   normaliseRequirementAu,
   REQUIREMENT_TOTAL_LABEL,
   type DegreeRequirements,
+  REQUIREMENT_RESTRICTED_SU_LABEL,
+  REQUIREMENT_TOTAL_SU_LABEL,
 } from "../../models/degree";
 
 import {
@@ -188,8 +190,16 @@ function degreeRequirementsToExcelRows(
 ): RequirementExcelRow[] {
   return [
     {
-      Type: "Total",
+      Type: REQUIREMENT_TOTAL_LABEL,
       RequiredAUs: degreeRequirements.totalAUs,
+    },
+    {
+      Type: REQUIREMENT_TOTAL_SU_LABEL,
+      RequiredAUs: degreeRequirements.suPolicy.totalSUAUs,
+    },
+    {
+      Type: REQUIREMENT_RESTRICTED_SU_LABEL,
+      RequiredAUs: degreeRequirements.suPolicy.restrictedSUAUs,
     },
     ...Object.entries(degreeRequirements.byType).map(([type, requiredAUs]) => ({
       Type: type,
@@ -303,6 +313,16 @@ function parseRequirementRows(rows: RequirementExcelRow[]): DegreeRequirements {
     const requirementType = normaliseRequirementType(type);
 
     if (!requirementType) return;
+
+    if (type === REQUIREMENT_TOTAL_SU_LABEL) {
+      requirements.suPolicy.totalSUAUs = requiredAUs;
+      return;
+    }
+
+    if (type === REQUIREMENT_RESTRICTED_SU_LABEL) {
+      requirements.suPolicy.restrictedSUAUs = requiredAUs;
+      return;
+    }
 
     requirements.byType[requirementType] = requiredAUs;
   });

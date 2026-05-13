@@ -4,6 +4,10 @@ import { MODULE_TYPES } from "../../models/module";
 import {
   DEFAULT_TOTAL_AUS,
   REQUIREMENT_TOTAL_LABEL,
+  DEFAULT_RESTRICTED_SU_AUS,
+  DEFAULT_TOTAL_SU_AUS,
+  REQUIREMENT_RESTRICTED_SU_LABEL,
+  REQUIREMENT_TOTAL_SU_LABEL,
 } from "../../models/degree";
 import type { ModuleExcelRow, RequirementExcelRow } from "./moduleExcel.types";
 
@@ -65,6 +69,11 @@ export const TEMPLATE_MODULE_ROWS: ModuleExcelRow[] = [
 
 export const TEMPLATE_REQUIREMENT_ROWS: RequirementExcelRow[] = [
   { Type: REQUIREMENT_TOTAL_LABEL, RequiredAUs: DEFAULT_TOTAL_AUS },
+  { Type: REQUIREMENT_TOTAL_SU_LABEL, RequiredAUs: DEFAULT_TOTAL_SU_AUS },
+  {
+    Type: REQUIREMENT_RESTRICTED_SU_LABEL,
+    RequiredAUs: DEFAULT_RESTRICTED_SU_AUS,
+  },
   ...MODULE_TYPES.map((type) => ({
     Type: type,
     RequiredAUs: 0,

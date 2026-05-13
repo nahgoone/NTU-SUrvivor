@@ -8,13 +8,13 @@ import SemesterStat from "./SemesterStat";
 
 type SemesterGroupProps = {
   group: GroupedModules;
-  onUpdateModule: (id: string, updates: UpdateModuleInput) => void;
+  onUpdateModuleGrade: (id: string, grade: string) => void;
   onDeleteModule: (id: string) => void;
 };
 
 export default function SemesterGroup({
   group,
-  onUpdateModule,
+  onUpdateModuleGrade,
   onDeleteModule,
 }: SemesterGroupProps) {
   const semesterStyle = getSemesterStyle(group.semester);
@@ -60,7 +60,7 @@ export default function SemesterGroup({
       <div className="p-3">
         <ModuleTable
           modules={group.modules}
-          onUpdateModule={onUpdateModule}
+          onUpdateModuleGrade={onUpdateModuleGrade}
           onDeleteModule={onDeleteModule}
         />
       </div>

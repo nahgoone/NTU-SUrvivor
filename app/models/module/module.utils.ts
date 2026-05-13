@@ -31,6 +31,22 @@ export function createModule(input: CreateModuleInput): Module {
   };
 }
 
+export function isSuGradedModule(module: Module): boolean {
+  return module.grade === "S/U";
+}
+
+export function getEffectiveModuleTypeForAu(module: Module): ModuleType {
+  const originalType = normaliseModuleType(module.type);
+
+  // School rule:
+  // If an MPE is S/U, it is counted towards BDE AUs instead of MPE AUs.
+  if (module.grade === "S/U" && originalType === "MPE") {
+    return "BDE";
+  }
+
+  return originalType;
+}
+
 export function normaliseModule(module: Module): Module {
   return createModule(module);
 }

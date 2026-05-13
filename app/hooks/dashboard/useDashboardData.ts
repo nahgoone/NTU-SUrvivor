@@ -3,12 +3,12 @@
 import { useMemo } from "react";
 import {
   MODULE_TYPES,
+  getEffectiveModuleTypeForAu,
   isModuleCompleted,
-  normaliseModuleType,
   type Module,
   type ModuleType,
 } from "../../models/module";
-import type { DegreeRequirements } from "../../models/degree";
+import { type DegreeRequirements, calculateSuUsage } from "../../models/degree";
 import { calculateGpa, calculateRemainingAUs } from "../../utils/gpaCalculator";
 import type {
   CompletedAUsByType,
@@ -25,13 +25,13 @@ export function useDashboardData(
     const { totalCompletedAUs, cumulativeGpa } = calculateGpa(modules);
 
     const remainingAUs = calculateRemainingAUs(modules, totalDegreeAUs);
-
+    const suUsage = calculateSuUsage(modules, degreeRequirements);
     const completedByType = createEmptyCompletedByType();
 
     modules.forEach((module) => {
       if (!isModuleCompleted(module)) return;
 
-      const moduleType = normaliseModuleType(module.type);
+      const moduleType = getEffectiveModuleTypeForAu(module);
       completedByType[moduleType] += module.au;
     });
 
@@ -62,6 +62,7 @@ export function useDashboardData(
       completedByType,
       typePercentages,
       remainingPercentage,
+      suUsage,
     };
   }, [modules, degreeRequirements]);
 }

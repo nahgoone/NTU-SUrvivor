@@ -17,7 +17,9 @@ import {
 import {
   getDefaultDegreeRequirements,
   normaliseDegreeRequirements,
+  updateRestrictedSUAUsInRequirements,
   updateTotalAUsInRequirements,
+  updateTotalSUAUsInRequirements,
   updateTypeRequirementInRequirements,
   type DegreeRequirements,
 } from "../models/degree";
@@ -37,6 +39,8 @@ type ModuleStore = {
   setDegreeRequirements: (requirements: DegreeRequirements) => void;
   updateTotalAUs: (totalAUs: number) => void;
   updateTypeRequirement: (type: ModuleType, requiredAUs: number) => void;
+  updateTotalSUAUs: (totalSUAUs: number) => void;
+  updateRestrictedSUAUs: (restrictedSUAUs: number) => void;
 };
 
 export const useModuleStore = create<ModuleStore>()(
@@ -89,14 +93,46 @@ export const useModuleStore = create<ModuleStore>()(
             requiredAUs,
           ),
         })),
+
+      updateTotalSUAUs: (totalSUAUs) =>
+        set((state) => ({
+          degreeRequirements: updateTotalSUAUsInRequirements(
+            state.degreeRequirements,
+            totalSUAUs,
+          ),
+        })),
+
+      updateRestrictedSUAUs: (restrictedSUAUs) =>
+        set((state) => ({
+          degreeRequirements: updateRestrictedSUAUsInRequirements(
+            state.degreeRequirements,
+            restrictedSUAUs,
+          ),
+        })),
     }),
     {
       name: "gpa-module-store",
       storage: createJSONStorage(() => localStorage),
+
       partialize: (state) => ({
         modules: state.modules,
         degreeRequirements: state.degreeRequirements,
       }),
+
+      merge: (persistedState, currentState) => {
+        const persisted = persistedState as Partial<ModuleStore>;
+
+        return {
+          ...currentState,
+          ...persisted,
+          modules: persisted.modules
+            ? persisted.modules.map(normaliseModule)
+            : currentState.modules,
+          degreeRequirements: persisted.degreeRequirements
+            ? normaliseDegreeRequirements(persisted.degreeRequirements)
+            : currentState.degreeRequirements,
+        };
+      },
     },
   ),
 );
