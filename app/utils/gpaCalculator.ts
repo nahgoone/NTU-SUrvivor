@@ -7,11 +7,21 @@ import {
   type Module,
 } from "../models/module";
 
+export const GPA_DECIMAL_PLACES = 3;
+
 export type GpaSummary = {
   totalCompletedAUs: number;
   totalGpaAUs: number;
   cumulativeGpa: number;
 };
+
+export function roundGpa(value: number): number {
+  return Number(value.toFixed(GPA_DECIMAL_PLACES));
+}
+
+export function formatGpa(value: number): string {
+  return value.toFixed(GPA_DECIMAL_PLACES);
+}
 
 export function calculateGpa(modules: Module[]): GpaSummary {
   let totalCompletedAUs = 0;
@@ -38,7 +48,7 @@ export function calculateGpa(modules: Module[]): GpaSummary {
   });
 
   const cumulativeGpa =
-    totalGpaAUs === 0 ? 0 : Number((totalGradePoints / totalGpaAUs).toFixed(2));
+    totalGpaAUs === 0 ? 0 : roundGpa(totalGradePoints / totalGpaAUs);
 
   return {
     totalCompletedAUs,

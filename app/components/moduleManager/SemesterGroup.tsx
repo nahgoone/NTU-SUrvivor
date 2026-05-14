@@ -1,4 +1,4 @@
-import { calculateGpa } from "../../utils/gpaCalculator";
+import { calculateGpa, formatGpa } from "../../utils/gpaCalculator";
 import { getSemesterStyle } from "../../utils/semesterStyles";
 import type { GroupedModules } from "../../types/moduleManager.types";
 import ModuleTable from "./ModuleTable";
@@ -43,7 +43,7 @@ export default function SemesterGroup({
         <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
           <SemesterStat
             label="Sem GPA"
-            value={semesterStats.cumulativeGpa.toFixed(2)}
+            value={formatGpa(semesterStats.cumulativeGpa)}
             className={semesterStyle.pill}
           />
 

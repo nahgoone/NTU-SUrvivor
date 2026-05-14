@@ -6,6 +6,7 @@ import { getModuleTypeStyle } from "../../utils/moduleStyles";
 import type { DashboardData } from "../../types/dashboard.types";
 import AuProgressBar from "./AuProgressBar";
 import ProgressLegend from "./ProgressLegend";
+import { formatGpa } from "@/app/utils/gpaCalculator";
 
 type DashboardSummaryProps = {
   dashboardData: DashboardData;
@@ -23,7 +24,7 @@ export default function DashboardSummary({
 
         <div className="mt-2 flex items-end gap-2">
           <h1 className="text-5xl font-bold tracking-tight text-gray-900">
-            {dashboardData.cumulativeGpa.toFixed(2)}
+            {formatGpa(dashboardData.cumulativeGpa)}
           </h1>
 
           <span className="mb-1 text-lg font-medium text-gray-500">/ 5.00</span>
