@@ -1,5 +1,6 @@
 // app/components/dashboard/StickyDashboard.tsx
 
+import { formatGpa } from "@/app/utils/gpaCalculator";
 import type { DashboardData } from "../../types/dashboard.types";
 import AuProgressBar from "./AuProgressBar";
 
@@ -26,7 +27,7 @@ export default function StickyDashboard({
 
           <div className="mt-1 flex items-end gap-1">
             <p className="text-3xl font-bold tracking-tight text-gray-900">
-              {dashboardData.cumulativeGpa.toFixed(2)}
+              {formatGpa(dashboardData.cumulativeGpa)}
             </p>
 
             <span className="mb-1 text-sm font-medium text-gray-500">
