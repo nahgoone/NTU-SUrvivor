@@ -68,7 +68,7 @@ export function useTranscriptImport() {
       .filter(
         (module) => !existingKeys.has(`${module.code}-${module.semester}`),
       )
-      .map(({ source, ...module }) => createModule(module));
+      .map(({ ...module }) => createModule(module));
 
     setModules([...modules, ...newModules]);
 
