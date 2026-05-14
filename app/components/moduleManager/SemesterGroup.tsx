@@ -1,5 +1,3 @@
-import type { Module } from "../../models/module";
-import type { UpdateModuleInput } from "../../models/module";
 import { calculateGpa } from "../../utils/gpaCalculator";
 import { getSemesterStyle } from "../../utils/semesterStyles";
 import type { GroupedModules } from "../../types/moduleManager.types";

@@ -20,6 +20,11 @@ export default function Dashboard() {
   const updateTypeRequirement = useModuleStore(
     (state) => state.updateTypeRequirement,
   );
+  const updateTotalSUAUs = useModuleStore((state) => state.updateTotalSUAUs);
+
+  const updateRestrictedSUAUs = useModuleStore(
+    (state) => state.updateRestrictedSUAUs,
+  );
 
   const dashboardData = useDashboardData(modules, degreeRequirements);
 
@@ -42,6 +47,8 @@ export default function Dashboard() {
         degreeRequirements={degreeRequirements}
         updateTotalAUs={updateTotalAUs}
         updateTypeRequirement={updateTypeRequirement}
+        updateTotalSUAUs={updateTotalSUAUs}
+        updateRestrictedSUAUs={updateRestrictedSUAUs}
       />
 
       <StickyDashboard
