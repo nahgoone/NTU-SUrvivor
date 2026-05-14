@@ -1,6 +1,5 @@
 import {
   GRADES,
-  MODULE_TYPES,
   getEffectiveModuleTypeForAu,
   normaliseModuleType,
   type Module,
@@ -8,7 +7,6 @@ import {
 } from "../../models/module";
 import ModuleTypeBadge from "./ModuleTypeBadge";
 import ModuleTypeSelect from "./ModuleTypeSelect";
-import { getModuleTypeStyle } from "../../utils/moduleStyles";
 
 type ModuleTableProps = {
   modules: Module[];
@@ -25,7 +23,16 @@ export default function ModuleTable({
 }: ModuleTableProps) {
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
-      <table className="w-full min-w-190 border-collapse text-sm">
+      <table className="w-full min-w-[750px] table-fixed border-collapse text-sm">
+        <colgroup>
+          <col className="w-[30px]" />
+          <col className="w-[130px]" />
+          <col className="w-[18px]" />
+          <col className="w-[50px]" />
+          <col className="w-[35px]" />
+          <col className="w-[20px]" />
+        </colgroup>
+
         <thead>
           <tr className="border-b border-gray-200 bg-gray-50 text-left text-gray-500">
             <th className="px-3 py-3 font-medium">Code</th>
@@ -40,7 +47,6 @@ export default function ModuleTable({
         <tbody>
           {modules.map((module) => {
             const originalType = normaliseModuleType(module.type);
-            const originalTypeStyle = getModuleTypeStyle(originalType);
             const effectiveType = getEffectiveModuleTypeForAu(module);
             const typeChangedBySuRule = originalType !== effectiveType;
 
@@ -50,10 +56,16 @@ export default function ModuleTable({
                 className="border-b border-gray-100 last:border-b-0"
               >
                 <td className="px-3 py-3 font-medium text-gray-900">
-                  {module.code}
+                  <span className="block truncate" title={module.code}>
+                    {module.code}
+                  </span>
                 </td>
 
-                <td className="px-3 py-3 text-gray-700">{module.name}</td>
+                <td className="px-3 py-3 text-gray-700">
+                  <span className="block truncate" title={module.name}>
+                    {module.name}
+                  </span>
+                </td>
 
                 <td className="px-3 py-3 text-gray-700">{module.au}</td>
 
@@ -81,11 +93,11 @@ export default function ModuleTable({
                     onChange={(event) =>
                       onUpdateModuleGrade(module.id, event.target.value)
                     }
-                    className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500"
+                    className="w-20 rounded-lg border border-gray-300 bg-white px-2 py-2 text-sm text-gray-900 outline-none focus:border-blue-500"
                   >
                     {GRADES.map((grade) => (
                       <option key={grade || "empty"} value={grade}>
-                        {grade || "No grade yet"}
+                        {grade || "—"}
                       </option>
                     ))}
                   </select>
@@ -95,9 +107,11 @@ export default function ModuleTable({
                   <button
                     type="button"
                     onClick={() => onDeleteModule(module.id)}
-                    className="text-sm font-medium text-red-600 hover:text-red-700"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-red-600 transition hover:bg-red-50 hover:text-red-700"
+                    aria-label={`Remove ${module.code}`}
+                    title="Remove module"
                   >
-                    Remove
+                    <TrashIcon />
                   </button>
                 </td>
               </tr>
@@ -106,5 +120,26 @@ export default function ModuleTable({
         </tbody>
       </table>
     </div>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 6h18" />
+      <path d="M8 6V4h8v2" />
+      <path d="M19 6l-1 14H6L5 6" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+    </svg>
   );
 }
