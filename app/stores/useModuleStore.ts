@@ -31,6 +31,7 @@ type ModuleStore = {
 
   degreeRequirements: DegreeRequirements;
 
+  clearModules: () => void;
   addModule: (module: CreateModuleInput) => void;
   updateModule: (id: string, updates: UpdateModuleInput) => void;
   deleteModule: (id: string) => void;
@@ -49,6 +50,10 @@ export const useModuleStore = create<ModuleStore>()(
       modules: [],
 
       degreeRequirements: getDefaultDegreeRequirements(),
+      clearModules: () =>
+        set({
+          modules: [],
+        }),
 
       addModule: (module) =>
         set((state) => ({

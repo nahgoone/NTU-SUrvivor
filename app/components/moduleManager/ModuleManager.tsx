@@ -30,6 +30,7 @@ export default function ModuleManager() {
 
     showAddForm,
     toggleAddForm,
+    handleClearAllModules,
 
     form,
     updateFormField,
@@ -37,6 +38,7 @@ export default function ModuleManager() {
     handleAddModule,
 
     updateModuleGrade,
+    updateModuleType,
     deleteModule,
   } = useModuleManager();
 
@@ -45,6 +47,8 @@ export default function ModuleManager() {
       <ModuleManagerHeader
         showAddForm={showAddForm}
         onToggleAddForm={toggleAddForm}
+        onClearAllModules={handleClearAllModules}
+        hasModules={modules.length > 0}
       />
 
       <TranscriptImportPanel />
@@ -87,6 +91,7 @@ export default function ModuleManager() {
               key={group.semester}
               group={group}
               onUpdateModuleGrade={updateModuleGrade}
+              onUpdateModuleType={updateModuleType}
               onDeleteModule={deleteModule}
             />
           ))}

@@ -1,18 +1,21 @@
 import { calculateGpa, formatGpa } from "../../utils/gpaCalculator";
 import { getSemesterStyle } from "../../utils/semesterStyles";
 import type { GroupedModules } from "../../types/moduleManager.types";
+import type { ModuleType } from "../../models/module";
 import ModuleTable from "./ModuleTable";
 import SemesterStat from "./SemesterStat";
 
 type SemesterGroupProps = {
   group: GroupedModules;
   onUpdateModuleGrade: (id: string, grade: string) => void;
+  onUpdateModuleType: (id: string, type: ModuleType) => void;
   onDeleteModule: (id: string) => void;
 };
 
 export default function SemesterGroup({
   group,
   onUpdateModuleGrade,
+  onUpdateModuleType,
   onDeleteModule,
 }: SemesterGroupProps) {
   const semesterStyle = getSemesterStyle(group.semester);
@@ -59,6 +62,7 @@ export default function SemesterGroup({
         <ModuleTable
           modules={group.modules}
           onUpdateModuleGrade={onUpdateModuleGrade}
+          onUpdateModuleType={onUpdateModuleType}
           onDeleteModule={onDeleteModule}
         />
       </div>

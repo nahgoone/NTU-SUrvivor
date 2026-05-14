@@ -1,11 +1,13 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import { validateSuGradeChange } from "../models/degree";
+import { validateSuGradeChange, calculateSuUsage } from "../models/degree";
 import { useModuleStore } from "../stores/useModuleStore";
 import {
   getModuleLevel,
   getModuleSemesterLabel,
   getEffectiveModuleTypeForAu,
+  normaliseModuleType,
+  type Module,
 } from "../models/module";
 import {
   ALL_TYPE_FILTER,
@@ -25,6 +27,7 @@ export function useModuleManager() {
   const degreeRequirements = useModuleStore(
     (state) => state.degreeRequirements,
   );
+  const clearModules = useModuleStore((state) => state.clearModules);
   const addModule = useModuleStore((state) => state.addModule);
   const updateModule = useModuleStore((state) => state.updateModule);
   const deleteModule = useModuleStore((state) => state.deleteModule);
@@ -162,6 +165,32 @@ export function useModuleManager() {
     setShowAddForm(false);
   }
 
+  function handleClearAllModules() {
+    if (modules.length === 0) {
+      toast.info("There are no modules to clear.");
+      return;
+    }
+
+    toast.warning("Clear all modules?", {
+      description:
+        "This will permanently remove all saved modules from this browser.",
+      duration: 8000,
+      action: {
+        label: "Clear all",
+        onClick: () => {
+          clearModules();
+          toast.success("All modules have been removed.");
+        },
+      },
+      cancel: {
+        label: "Cancel",
+        onClick: () => {
+          toast.info("Clear all cancelled.");
+        },
+      },
+    });
+  }
+
   function updateModuleGrade(moduleId: string, grade: string) {
     const validation = validateSuGradeChange(
       modules,
@@ -182,6 +211,42 @@ export function useModuleManager() {
     if (validation.message) {
       toast.info(validation.message);
     }
+  }
+
+  function updateModuleType(moduleId: string, type: string) {
+    const normalisedType = normaliseModuleType(type);
+
+    const proposedModules: Module[] = modules.map((module) =>
+      module.id === moduleId
+        ? {
+            ...module,
+            type: normalisedType,
+          }
+        : module,
+    );
+
+    const proposedSuUsage = calculateSuUsage(
+      proposedModules,
+      degreeRequirements,
+    );
+
+    if (proposedSuUsage.exceedsRestrictedSULimit) {
+      toast.error(
+        `You can only use ${degreeRequirements.suPolicy.restrictedSUAUs} AU of S/U for Core, MPE, or ICC modules.`,
+      );
+      return;
+    }
+
+    if (proposedSuUsage.exceedsTotalSULimit) {
+      toast.error(
+        `You have exceeded your total S/U limit of ${degreeRequirements.suPolicy.totalSUAUs} AU.`,
+      );
+      return;
+    }
+
+    updateModule(moduleId, {
+      type: normalisedType,
+    });
   }
 
   return {
@@ -206,6 +271,7 @@ export function useModuleManager() {
 
     showAddForm,
     toggleAddForm,
+    handleClearAllModules,
 
     form,
     updateFormField,
@@ -214,5 +280,6 @@ export function useModuleManager() {
 
     deleteModule,
     updateModuleGrade,
+    updateModuleType,
   };
 }

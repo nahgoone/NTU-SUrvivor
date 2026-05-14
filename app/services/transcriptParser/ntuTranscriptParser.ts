@@ -308,11 +308,19 @@ function inferModuleType(code: string): string {
   if (code.startsWith("ML")) return "ICC";
   if (code.startsWith("HW")) return "ICC";
 
+  const level = getCodeLevel(code);
+
   // Transcript does not reliably indicate Core vs MPE.
   // Let users edit this later in Module Manager.
-  if (code.startsWith("SC")) return "Core";
+  if (level === "1" || level === "2") return "Core";
+  if (level === "3" || level === "4") return "MPE";
 
   return "Other";
+}
+
+function getCodeLevel(code: string): string {
+  const match = code.match(/\d/);
+  return match ? match[0] : "others";
 }
 
 function parseTranscriptSummary(items: PdfTextItem[]): TranscriptSummary {
