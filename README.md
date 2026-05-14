@@ -98,6 +98,7 @@ docker compose down
 | Excel Import/Export | xlsx               |
 | Containerisation    | Docker             |
 | CI/CD               | GitHub Actions     |
+| Deployment          | Vercel             |
 
 ## How It Works
 
