@@ -1,8 +1,4 @@
-import {
-  GRADES,
-  type Module,
-  type UpdateModuleInput,
-} from "../../models/module";
+import { GRADES, type Module } from "../../models/module";
 import ModuleTypeBadge from "./ModuleTypeBadge";
 
 type ModuleTableProps = {
