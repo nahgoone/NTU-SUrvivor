@@ -18,6 +18,7 @@ export const GRADES = [
   "D",
   "F",
   "S/U",
+  "PASS",
   "EX",
 ] as const;
 
@@ -37,7 +38,7 @@ export const GRADE_POINTS: Partial<Record<Grade, number>> = {
   F: 0.0,
 };
 
-export const NON_GPA_GRADES: readonly Grade[] = ["", "S/U", "EX"];
+export const NON_GPA_GRADES: readonly Grade[] = ["", "S/U", "PASS", "EX"];
 
 export const NON_COMPLETED_GRADES: readonly Grade[] = [""];
 
