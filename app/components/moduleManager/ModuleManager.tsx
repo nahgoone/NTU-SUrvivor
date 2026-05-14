@@ -6,6 +6,7 @@ import ModuleAddForm from "./ModuleAddForm";
 import ModuleFilters from "./ModuleFilters";
 import SemesterGroup from "./SemesterGroup";
 import SuOptimizerPanel from "./SuOptimizerPanel";
+import TranscriptImportPanel from "./TranscriptImportPanel";
 export default function ModuleManager() {
   const {
     modules,
@@ -45,6 +46,8 @@ export default function ModuleManager() {
         showAddForm={showAddForm}
         onToggleAddForm={toggleAddForm}
       />
+
+      <TranscriptImportPanel />
 
       <SuOptimizerPanel />
 
