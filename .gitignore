@@ -77,3 +77,10 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# Python backend
+backend/.venv/
+backend/__pycache__/
+backend/**/*.pyc
+backend/.pytest_cache/
+backend/.env
