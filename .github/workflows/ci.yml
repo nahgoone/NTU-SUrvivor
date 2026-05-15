@@ -9,8 +9,12 @@ on:
 
 jobs:
   quality-checks:
-    name: Lint, Type Check, Build
+    name: Frontend - Lint, Type Check, Build
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
 
     steps:
       - name: Checkout repository
@@ -21,6 +25,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -31,18 +36,22 @@ jobs:
       - name: Run TypeScript check
         run: npm run typecheck
 
-      - name: Build app
+      - name: Build frontend
         run: npm run build
 
-      - name: Build Docker image
+      - name: Build frontend Docker image
         run: docker build -t ntu-survivor .
 
   deploy-production:
-    name: Deploy to Vercel Production
+    name: Deploy Frontend to Vercel Production
     runs-on: ubuntu-latest
     needs: quality-checks
 
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    defaults:
+      run:
+        working-directory: frontend
 
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

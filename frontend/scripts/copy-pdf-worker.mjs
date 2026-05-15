@@ -1,7 +1,7 @@
 import { copyFileSync, existsSync, mkdirSync } from "fs";
 import { dirname } from "path";
 
-const source = "node_modules/pdfjs-dist/build/pdf.worker.min.mjs";
+const source = "../node_modules/pdfjs-dist/build/pdf.worker.min.mjs";
 const destination = "public/pdf.worker.min.mjs";
 
 if (!existsSync(source)) {
