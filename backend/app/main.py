@@ -1,7 +1,9 @@
+# backend/app/main.py
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import health
+from app.api.routes import academic, health, transcript
 
 app = FastAPI(
     title="NTU Survivor API",
@@ -11,12 +13,21 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-    ],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 app.include_router(health.router)
+app.include_router(academic.router)
+app.include_router(transcript.router)
+
+
+@app.get("/")
+def root():
+    return {
+        "message": "NTU Survivor API is running",
+        "docs": "/docs",
+        "health": "/api/health",
+    }
